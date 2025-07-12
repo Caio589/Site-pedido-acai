@@ -1,0 +1,152 @@
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Peça seu Açaí</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #35003d;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      background-color: #4b0055;
+      padding: 20px;
+      text-align: center;
+    }
+    header h1 {
+      margin: 0;
+      color: #ffd700;
+    }
+    .container {
+      max-width: 700px;
+      margin: 30px auto;
+      background: #45004d;
+      padding: 20px;
+      border-radius: 10px;
+    }
+    h2 {
+      color: #ffeb3b;
+    }
+    label, select, input, textarea {
+      display: block;
+      width: 100%;
+      margin: 10px 0;
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+    }
+    button {
+      background: #ffd700;
+      color: #000;
+      padding: 15px;
+      border: none;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+      width: 100%;
+    }
+    .pix-box {
+      background-color: #fff;
+      color: #000;
+      padding: 15px;
+      border-radius: 10px;
+      margin-top: 30px;
+      text-align: center;
+    }
+    footer {
+      text-align: center;
+      margin: 20px;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Monte seu Açaí</h1>
+</header>
+
+<div class="container">
+  <form id="orderForm">
+    <h2>Tamanho</h2>
+    <select id="tamanho" required>
+      <option value="500ml - R$17">500ml - R$17</option>
+      <option value="400ml - R$15">400ml - R$15</option>
+      <option value="300ml - R$14">300ml - R$14</option>
+    </select>
+
+    <h2>Adicionais (escolha até 3)</h2>
+    <label><input type="checkbox" value="Leite condensado" class="adicional"/> Leite condensado</label>
+    <label><input type="checkbox" value="Leite Ninho" class="adicional"/> Leite Ninho</label>
+    <label><input type="checkbox" value="Paçoca" class="adicional"/> Paçoca</label>
+    <label><input type="checkbox" value="Granola" class="adicional"/> Granola</label>
+    <label><input type="checkbox" value="Granulado" class="adicional"/> Granulado</label>
+    <label><input type="checkbox" value="Flocos de arroz" class="adicional"/> Flocos de arroz</label>
+    <label><input type="checkbox" value="Cereal" class="adicional"/> Cereal</label>
+
+    <h2>Frutas</h2>
+    <label><input type="checkbox" value="Morango" class="fruta"/> Morango</label>
+    <label><input type="checkbox" value="Banana" class="fruta"/> Banana</label>
+    <label><input type="checkbox" value="Kiwi" class="fruta"/> Kiwi</label>
+    <label><input type="checkbox" value="Uva" class="fruta"/> Uva</label>
+    <label><input type="checkbox" value="Maçã" class="fruta"/> Maçã</label>
+
+    <h2>Adicionais pagos (+ R$1,50)</h2>
+    <label><input type="checkbox" value="Nutella" class="pago"/> Nutella</label>
+    <label><input type="checkbox" value="Pasta de amendoim" class="pago"/> Pasta de amendoim</label>
+    <label><input type="checkbox" value="Bis" class="pago"/> Bis</label>
+    <label><input type="checkbox" value="Gotas de chocolate" class="pago"/> Gotas de chocolate</label>
+
+    <h2>Informações do cliente</h2>
+    <input type="text" id="nome" placeholder="Seu nome" required />
+    <textarea id="endereco" placeholder="Endereço para entrega" required></textarea>
+
+    <button type="submit">Enviar Pedido via WhatsApp</button>
+  </form>
+
+  <div class="pix-box">
+    <h2>💳 Pagamento via PIX</h2>
+    <p>Chave Pix (CPF): <strong>106.641.605-22</strong></p>
+    <p>Após o pagamento, envie o comprovante junto com o pedido.</p>
+  </div>
+</div>
+
+<footer>
+  <p>&copy; 2025 - Açaí Online</p>
+</footer>
+
+<script>
+  document.getElementById('orderForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+
+    const nome = document.getElementById('nome').value;
+    const endereco = document.getElementById('endereco').value;
+    const tamanho = document.getElementById('tamanho').value;
+    const adicionais = Array.from(document.querySelectorAll('.adicional:checked')).map(cb => cb.value);
+    const frutas = Array.from(document.querySelectorAll('.fruta:checked')).map(cb => cb.value);
+    const pagos = Array.from(document.querySelectorAll('.pago:checked')).map(cb => cb.value);
+
+    const total =  (tamanho.includes("17") ? 17 : tamanho.includes("15") ? 15 : 14) + pagos.length * 1.5;
+
+    const msg = `*Novo Pedido de Açaí*%0A
+Nome: ${nome}%0A
+Endereço: ${endereco}%0A
+Tamanho: ${tamanho}%0A
+Adicionais: ${adicionais.join(", ")}%0A
+Frutas: ${frutas.join(", ")}%0A
+Extras Pagos: ${pagos.join(", ")}%0A
+*Total: R$ ${total.toFixed(2)}*%0A
+*Chave Pix:* 106.641.605-22`;
+
+    const url = `https://wa.me/5511963266825?text=${msg}`;
+    window.open(url, '_blank');
+  });
+</script>
+
+</body>
+</html>
